@@ -1,0 +1,9 @@
+/*
+!/.gitignore
+!/dist/
+/dist/*
+!/gulpfile.js
+/node_modules/
+!/package.json
+!/readme.md
+!/src

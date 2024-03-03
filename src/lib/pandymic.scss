@@ -1,0 +1,122 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+@use "sass:string";
+
+$debug: false;
+
+$svg: ();
+
+@function str-replace( $string, $search, $replace: "" ) {
+
+  $index: string.index( $string, $search );
+  @if $index {
+    @return string.slice( $string, 1, $index - 1 ) + $replace + str-replace( string.slice( $string, $index + string.length( $search ) ), $search, $replace );
+  }
+
+  @return $string;
+}
+
+@function btoa( $string: "" ) {
+
+  @if meta.function-exists( "pandymic-jsapi-btoa" ) {
+    @return pandymic-jsapi-btoa($string);
+  }
+  @warn "Base64 encoding of strings depends sass compiler `functions` option support. The `pandymic-jsapi-btoa` function must be declared in the gulpfile.";
+
+  @return $string;
+}
+
+@function svg-add( $svgString, $colorOrColors: null, $__returnString: false ) {
+  
+  $default: #000;
+  @if meta.type-of( $colorOrColors ) == color {
+    $default: $colorOrColors;
+  }
+  $map: (
+    "default": str-replace( $svgString, "currentColor", $default ),
+    "currentColor": $svgString
+  );
+
+  @if $__returnString {
+    @if meta.type-of( $colorOrColors ) == color {
+      @return map.get( $map, "default" );
+    } @else {
+      @warn "Can only return string if colorOrColors argument is a color value.";
+      @if $debug { @debug meta.inspect($colorOrColors); }
+    }
+  }
+
+  @if meta.type-of( $colorOrColors ) == map {
+    @each $color, $value in $colorOrColors {
+      @if meta.type-of( $color ) == string {
+        @if meta.type-of( $value ) == color {
+          $map: map.merge( $map, ( $color: str-replace( $svgString, "currentColor", $value ) ) );
+        }
+      }
+    }
+  }
+
+  @return $map;
+}
+
+@function svg-get( $name, $color: "default" ) {
+  
+  $return: false;
+  @if meta.variable-exists( "svg" ) {
+    @if meta.type-of( $svg ) == map {
+      @if map.has-key( $svg ,$name ) {
+        $data: map.get( $svg, $name );
+        @if meta.type-of( $data ) == map {
+
+          @if meta.type-of( $color ) == color {
+            $return: svg-add( map.get( $data, "currentColor" ), $color, true );
+          } @else if map.has-key( $data, $color ) {
+            $return: map.get( $data, $color );
+          } @else {
+            @warn "$color does not exist in $data.";
+            @if $debug { @debug meta.inspect($color); }
+          }
+
+        }
+      } @else {
+        @warn "$name does not exist in $svg.";
+        @if $debug { @debug meta.inspect($color); }
+      }
+
+      @if $return {
+        @return btoa( $return );
+      } @else {
+        @warn "$data is invalid type.";
+        @if $debug { @debug meta.inspect($data); }
+      }
+    } @else {
+      @warn "$svg is invalid type.";
+      @if $debug { @debug meta.inspect($svg); }
+    }
+  }
+
+  @return $return;
+}
+
+@function svg-url( $name, $color: "default" ) {
+  $return: "";
+
+  $svg-data: svg-get( $name, $color );
+  @if $svg-data {
+    @if meta.function-exists( "pandymic-jsapi-btoa" ) {
+      $return: "url(data:image/svg+xml;base64,#{$svg-data})";
+    } @else {
+      $return: "url(data:image/svg+xml;#{str-replace( '"', "'", $svg-data )})";
+    }
+    @if $debug { @debug meta.inspect($return); }
+  }
+  @return #{$return};
+}
+
+@mixin svg( $svgMap: null ) {
+  @if meta.type-of( $svgMap ) == map {
+    $svg: $svgMap !global;
+  }
+}

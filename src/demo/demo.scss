@@ -1,0 +1,109 @@
+@use "dist/lib/pandymic" as pandymic;
+
+/*********
+ * Demo icon courtesy of FontAwesome
+ * ----
+ * Font Awesome Free 6.5.1 by @fontawesome https://fontawesome.com 
+ * License - https://fontawesome.com/license/free
+ * Copyright 2024 Fonticons, Inc.
+ ********/
+
+@include pandymic.svg( (
+  "demo": pandymic.svg-add( '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="512" viewBox="0 0 640 512"><path fill="currentColor" d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg>', ( "magenta": #f0f ) )
+) );
+
+body {
+
+  font-family: sans-serif;
+  margin: 15px;
+
+}
+
+h1 {
+
+  font-size: 2rem;
+
+}
+
+figure {
+
+  margin: 1em auto;
+
+  width: 100%;
+  max-width: 640px;
+
+  height: auto;
+  max-height: 512px;
+  
+  aspect-ratio: 5 / 4;
+
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  position: relative;
+
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+
+  scale: 1;
+
+  @supports not ( aspect-ratio: 5 / 4 ) {
+    padding-top: 80%;
+  }
+
+  &:before,
+  &:after {
+
+    content: '';
+    display: block;
+
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: inherit;
+    background-position: inherit;
+    background-repeat: inherit;
+    background-size: inherit;
+
+  }
+
+  &:before {
+    background-image: pandymic.svg-url( "demo", "magenta" );
+    z-index: -1;
+
+    top: -5px;
+    left: -5px;
+
+  }
+
+  &:after {
+    background-image: pandymic.svg-url( "demo", #0f0 );
+    z-index: -1;
+
+    top: 5px;
+    left: 5px;
+  }
+
+  b {
+
+    display: block;
+    width: 100%;
+    height: 100%;
+    flex: 1 0 100%;
+
+    background-color: inherit;
+    background-image: pandymic.svg-url( "demo" );
+    background-position: inherit;
+    background-repeat: inherit;
+    background-size: inherit;
+
+    mix-blend-mode: hue;
+
+  }
+
+}

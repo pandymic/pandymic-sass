@@ -1,0 +1,21 @@
+{
+  "name": "pandymic-sass",
+  "version": "1.0.0",
+  "description": "SASS library of handy common functions and mixins used throughout my projects.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pandymic/pandymic-sass.git"
+  },
+  "author": "Michal Pandyra <mike@pandymic.com>",
+  "bugs": {
+    "url": "https://github.com/pandymic/pandymic-sass/issues"
+  },
+  "homepage": "https://github.com/pandymic/pandymic-sass#readme",
+  "devDependencies": {
+    "fancy-log": "^2.0.0",
+    "gulp": "^4.0.2",
+    "gulp-plumber": "^1.2.1",
+    "gulp-sass": "^5.1.0",
+    "sass": "^1.71.1"
+  }
+}
