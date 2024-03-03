@@ -38,6 +38,23 @@ Returns a base64 encoded SVG string. If the optional second parameter is a *stri
 #### <code>svg-url( svgName [, color: <i>string|color</i>] )</code>
 Similar to the above function with the same arguments. This function returns a fully formed CSS `url()` function with the full data url, including the content type definition and the base64 encoded string that is returned by `svg-get()`.
 
+#### Example
+<pre>
+
+b {
+
+  background-image: pandymic.svg-url( "demo" );
+
+  &:before {
+    background-image: pandymic.svg-url( "demo", "magenta" );
+  }
+
+  &:after {
+    content: pandymic.svg-url( "demo", #f0f );
+  }
+}
+</pre>
+
 ### Assumptions
 
 * All attributes in the SVG string are surrounded in quotation marks (")
